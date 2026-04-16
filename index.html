@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <title>TakvenUp Voice Study | ÙØ·Ù§ÙØ¹Û ØµÙØªÙ ØªÙÙÙÒºØ¢Ø¼</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --card-border: rgba(148, 163, 184, 0.08);
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 32px 0 24px;
+        }
+        
+        .logo {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+        
+        .card h2 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Steps */
+        .steps {
+            counter-reset: step;
+        }
+        
+        .step {
+            position: relative;
+            padding-right: 40px;
+            margin-bottom: 16px;
+        }
+        
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .step strong {
+            color: var(--text);
+        }
+        
+        /* Questions */
+        .questions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .question-card {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .question-card:active,
+        .Euestion-card.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.15);
+        }
+        
+        .question-card.selected::after {
+            content: 'â';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-green);
+            colorj white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .question-card .q-num {
+            font-size: 11px;
+            color: var(--primary-light);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .question-card .q-text {
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        
+        .question-card .q-hint {
+            font-size: 12px;
+            bolor: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+        
+        /* Warning box */
+        .warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: <\r\npx solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 14px;
+        }
+        
+        .warning p {
+            font-size: 13px;
+            color: #fbbf24;
+        }
+        
+        /* Recording tips */
+        .tips {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .tip {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+        }
+        
+        .tip-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .tip-bad .tip-icon {
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        /* Name form */
+        .form-group {
+            margin-bottom: 14px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text);
+            font-size: 16px;
+            font-family: inherit;
+            direction: rtl;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            margin-top: 8px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Result */
+        .result {
+            display: none;
+            text-align: center;
+            animation: fadeUp 0.4s ease;
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-num {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--accent-green);
+            margin: 16px 0;
+        }
+        
+        .result-question {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        /* Progress */
+        .progress-wrap {
+            margin-top: 16px;
+        }
+        
+        .progress-bar {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), #c084fc);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0 %;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: center;
+        }
+    </style>
+<style>
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+</style></head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">^ð</div>
+            <h1>ÙÖ)öa6.váÈ6-vb6*¶b6*¶`öb6a´®¶(¶/ÚOZÝ[\ÚXÙHÝYOÜÙ]KKHYÙHN[ÝXÝ[ÛÈKO]YHYÙLHKKHÚ]	ÚHKO]Û\ÜÏHØ\¼'å#H9&¶6*6)öã6«È6*6ªvba¶b¶+ÏÏÚ]Û\ÜÏHÝ\È]Û\ÜÏHÝ\ÝÛÏ¶ã6ªH6,öb6)öa6)öa¶*­¦ë£¯bb j¯fn3b¼ð½ÍÑÉ½¹ø(ñÀûbbÈfn3bÏb¨fûbn3n3fn3j¤bÏf#j}bÇfbnb«b»bb Z«fØ¯</p>
+                    </div>
+                    <div class="step_">
+                        <strong>æ"o6âà2 Ø¯ÙÛÙÙâØ§Û Ø¶Ø¨Ø· Ú§YÙØ¯</strong>
+                        <p>Ø¨Ù Ø²Ø¨Ø§Ù Ø¯Ø§Ø±Ù Ø¯Ø±Ø¨Ø§Ø±Ù Ø³æ#j}b×b·b«fj§fØ¯</p>
+                    </div>
+                    <div class="step">
+                        <strong>b&ón.7&R
+=­­óÂ÷7G&öæsà¢Ççfö6R&R
+fb¿bÇf#fèf#bb«bÏbfûb|b«fn3b¼ð½ÍÑÉ½¹ø(ð½¥Øø(ð½¥Øø(ð½¥Øø((ð´´EÕÍÑ¥½¸´´ø(ð´´I¹ÈEÕÍÑ¥½¹Ì´´ø(ñ¥Ø±ÍÌôÉø(ñ ÈûÂ~RDbÏf#bfb·f#b¿fbÇfbnb«b»bb Z«fØ¯</h2>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
+                    ÙØ± Ø³æ#j}ÙÙ re ÙaÈÚÜÚ6+öb6,viöb¶+È6)öá¶*¶+¶)ö*5ª¶a¸Íò
+"
+ÿãÂ÷à¢ÆFb6Æ73Ò'&öw&W72×w&#à¢ÆFb6Æ73Ò'&öw&W72Ö&"#ãÆFb6Æ73Ò'&öw&W72ÖfÆÂ"CÒ'&öw&W74fÆÂ#ãÂöFcãÂöFcà¢ÆFb6Æ73Ò'&öw&W72ÖÆ&VÂ"CÒ'&öw&W74Æ&VÂ#ãò
+m
+½í¢
+½ýrÂöFcà¢ÂöFcà¢ÂöFcà ¢ÂÒÒ&V6÷&FærF2ÒÓà¢ÆFb6Æ73Ò&6&B#à¢Æ#ï	øêB
+mª­~(	bf(bÛb¢£bÜð½ Èø(ñ¥Ø±ÍÌôÑ¥ÁÌø(ñ¥Ø±ÍÌôÑ¥Àø(ñ¥Ø±ÍÌôÑ¥Àµ¥½¸ûrL¼ð½¥Øø(ñ¥ØûbÜàÈÈÄïb£f+bçf b×b·b£b¨bZ«fff+b¼Pfb¯fbn0j¯fb£bn3j¤b¿f#bÏb¨Àf§ÙØ¯</div>
+                    </div>
+                    <div class="tip">
+                        <div class="tip-icon">â/</div>
+                        <div>âØ§ÙÙÙ´â Ù ÙÚ©Ø« ÑØ¨ÛØ¹Ù Ùs â Ù¾Ø§Ù ÙÚ©ÙÙØ¯</div>
+                    </div>
+                    <div class="tip">
+                        <div class="tip-icon">â/</div>
+                        <div>Ù Ø¬Ø§Û Ø§Ø±Ø§Ø¥ Ø¶Ø¨Ø· Ú§YÙØ¯</div>
+                    </div>
+                    <div class="tip tip-bad">
+                        <div class="tip-icon">â/</div>
+                        <div>Ø§Ø² ÑØ±ÙÙº ÙØªÙ ÙØ®ÙØ§ÙÙØ¯ _â Ø¨Ù Ú©Ùavb6*6+¹Ú¶a¶*¶)öa6-v+v*6*6)õª¶a¶iöb¶+ÏÙ]Ù]Ù]]Û\ÜÏHØ\[È¸¦ª6b6b¶,È6*6)öb¶+È6+v+ö)öarÇ7G&öæsíb&ón.3"
+ý-¸Í-sÂ÷7G&öæsâ
+}M
+râ
+j­]ªØ± Ø§Ø² 2 Ø¯ÙÛÙÙ ÙØ¨ÙÙ ÙÙã6-6aËÜÙ]Ù]Ù]KKHYÙHÛÛ\X][ÛKO]YHYÙLÛ\ÜÏH\Ý[]Û\ÜÏHØ\]Ý[OHÛ\Ú^NÈ¸§$ËÏÙ]Ý[OH\ÝYKXÛÛ[Ù[\È¶,öb6)öa6-6aR
+­½¸Í¢
+MòÂö#à¢ÆFb6Æ73Ò'&W7VÇBÖçVÒ"CÒ'&W7VÇDçVÒ#â3ÂöFcà¢Ç7GÆSÒ&6öÆ÷#§f"Ò×FWBÖ×WFVB²Ö&vâÖ&÷GFöÓ£'²#í>b6§Ù­r&S£Â÷à¢ÆFb6Æ73Ò'&W7VÇB×VW7Föâ"CÒ'&W7VÇEVW7Föâ#ãÂöFcà¢ ¢ÆFb6Æ73Ò'v&æær"7GÆSÒ'FWBÖÆvã§&vC²#à¢ÇëÝ}M¢
+­ªfö6R"
+ý-¸Í-~(	}¸Â-rªm­ò
+
+«fFobÇf#fèb«fn3b¼ð½Àø(ñÀÍÑå±ôµÉ¥¸µÑ½ÀèáÁàìûfbÓbÇf#bäÙ½¥FofKf#n3f+b¼èñÍÑÉ½¹ø{bÏf#j}bÓf§Ø±Ù <span id="resultSpk"></span>"</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            TakvenUp Â
+            ÙØ·Ù§ÙØ¹Û ØµÙØªÙ$t2026
+            ÑÙØ§Ù re ÙØ¨Ø· Ê©ÙÙØ¯ Ø¨Ø±Ø§Û Ø¨ÙØ¨ÙØ¯ ÙÙØ´ Ø®æ#jÙÙØ¹Ù Ø§ÖªØªÙØ§Ø«Ù ÙÙØ§Ø§Ø¯Ù <</div>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            { id: 1, text: "Ù¸±Ø§Ù¨Ø±Ù ÙÚ¶aÈ4föb¶)È6ªv)ö,vã6ªvaÈ6*¶+6,v*6aÈ6+ö)ö,vb¶+È6.+v*6*4föa¶ã6+ÏÈ6ã6ª6b6,H6-6,vb6.6ªviö*È6b6b¶ã6ã6)ö+È6«ö,v`v*¶ã6+ÏÈ[¶bc¼ï&:k=¢
+]M]¸ÍÂ
+ýª}mý}­Â
+-Mûmª¢Â
+¸ÍR
+]
+½}¢
+ý¸Íªfô°(ì¥èÈ°ÑáÐèn3n¨bÇf#bÈfff#ff(b·f#b¿fÉb«bÇbÃn3bÜj§ff+b¼¸bbÈbß£bfj§fFobfn3j¤j¯fj§bbÇfbf&7j§ff+b¼ü°¡¥¹Ðèb¿bÇbÌFon3bfb¿f°j§bbÇfb¯b·ff+b°b»bffý}­Â
+bÇf+n0j§fbbÌô°(ì¥èÌ°ÑáÐèb·ffØ§Ø±Ùª âØØ§ÛÙ Ø¯Ø§Ø±Ù§Øª ÙÚ©Ù ÑÚ©ÛØ¯?", hint: "Ùav)ö,vj6f6)öb6`va¶ã6#6l¶*6)ö[6ªvavo¶ã6b*¶,K6ã6)H6avav)ö,v*¶a}¢
+mr"ÒÀ¢²C¢BÂFWC¢-«}r
+­ÝÝ¸ÍM}¢
+íò
+­
+¸Ír
+ªm­òâ
+ªÍ2
+½}mý¸Íªò
+
+­¸Â
+ª}r
+ý}­óò"ÂçC¢-]ªÂ
+ím}m­m­"Â
+ý}bf(bf&bËbÓf(ô°(ì¥èÔ°ÑáÐè[Ûª ØªÚ³bÇb£fFob«bÇbÐf+f(bÓbfbÈÉfb÷fFofn3b¼ü°¡¥¹Ðèf ÑÚ©Ø§Ø±ÙØ¬ ÙaÈ4fö+ö,v,Ë6ar
+½-mýªý¢"ÒÀ¢²C¢bÂFWC¢-¸Íº¢
+­«6,v*6aÈ4fö£v,v+6,6)ö,6ªvaÈ4fö*¶)ö`v,öaH6ar
+½¢
+½Mn3f+b¼ü°¡¥¹Ðè"bÇbËf#f§ Ù Ø§ÙØ¨¯Ø§Ù Ø´Ø²ÙÛ " }
+        ];
+        let selectedQ = null;
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsList');
+            container.innerHTML = QUESTIONS.map(q => `
+                <div class="question-card" id="q-${q.id}" onclick="selectQuestion(${q.id})">
+                    <div class="q-num">Ø³æ#j} ${q.id}</div>
+                    <div class="q-text">${q.text}</div>
+                    <div class="q-hint">${q.hint}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectQuestion(id) {
+            document.querySelectorAll('.question-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('q-' + id).classList.add('selected');
+            selectedQ = id;
+        }
+
+        function getClaims() {
+            try { return JSON.parse(localStorage.getItem('voiceStudy2026') || '{}'); }
+            catch { return {}; }
+        }
+
+        function saveClaims(data) {
+            localStorage.setItem('voiceStody2026', JSON.stringify(data));
+        }
+
+        funcuon getClaimCount() {
+            return Object.keys(getClaims()).length;
+        }
+
+        function updateProgress() {
+            const count = getClaimCount();
+            document.getElementById('progressFill').style.width = `${Math.min(count, 100)}%`;
+            document.getElementById('progressLabel').textContent = ` ${count} / 100 ÙÙØ± Ø«Ø®Øª ÑÙØ§ `;
+        }
+
+        function submitClaim() {
+            const name = document.getElementById('nameInput').value.trim();
+            const errEl = document.getElementById('errorMsg');
+
+            if (!selectedQ) {
+                errEl.textContent = 'ÙØ·Ù+È6)öb6a6ã6ªH6,öb6§Ù6)öa¶*­¦ë£¯bb j¯fn3b¼üì(ÉÉ°¹ÍÑå±¹¥ÍÁ±äô±½¬ì(ÉÑÕÉ¸ì(ô(¥ ¹µ¤ì(ÉÉ°¹ÑáÑ
+½¹Ñ¹Ðôfbßf¯ ÙÙØ¯Ø³ ÑÛØ§ÙÙØ¯';
+                errEl.style.display = 'block';
+                return;
+            }
+            errEl.style.display = 'none';
+
+            const claims = getClaims();
+            const num = getClaimCount() + 1;
+            const spkId = 'SPK' + String(num).padStart(3, '0');
+
+            claims[spkId] = { name: name, question: selectedQ };
+            saveClaims(claims);
+
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            document.getElementById('resultNum').textContent = '#' + String(num).padStart(3, '0');
+            document.getElementById('resultSpk').textContent = selectedQ;
+            const q = QUESTIONS.find(q => q.id === selectedQ);
+            document.getElementById('reseltQuestion').textContent = q ? q.text : '';
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        renderQuestions();
+        updateProgres();
+    </script>
+</body></html>
