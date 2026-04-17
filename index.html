@@ -2622,76 +2622,47 @@
         document.querySelectorAll('.script-card').forEach(c => c.classList.remove('selected'));
         const el = document.getElementById('sc-' + id);
         if (el) el.classList.add('selected');
-        selectedScript = id;
-    }
 
-    // ── Submit claim ──
-    function submitClaim() {
-        const name = document.getElementById('nameInput').value.trim();
-        const errEl = document.getElementById('errorMsg');
+      async function submitClaim() {
+              const nameInput = document.getElementById('nameInput');
+              const name = nameInput ? nameInput.value.trim() : '';
+              const errEl = document.getElementById('errorMsg');
+              if (!selectedScript) {
+                          if (errEl) { errEl.textContent = 'Please select a script'; errEl.style.display = 'block'; }
+                          return;
+              }
+              if (!name) {
+                          if (errEl) { errEl.textContent = 'Please enter your name'; errEl.style.display = 'block'; }
+                          return;
+              }
+              const s = SCRIPTS.find(x => x.id === selectedScript);
+              const btn = document.querySelector('.btn');
+              if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
+              const API_URL = "https://script.google.com/macros/s/AKfycbw5XuDMRrTQ8KjLyHYLZbtLgGYNW44T8nYb6l9ZRBGoE8VizpvI6uee6Iuc4PPP31owvw/exec";
+              try {
+                          await fetch(API_URL, {
+                                          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
+                                          body: JSON.stringify({ id: s.id, name: name })
+                          });
+              } catch (e) { console.error(e); }
+              document.getElementById('page1').style.display = 'none';
+              document.getElementById('page2').style.display = 'block';
+              document.getElementById('resultNum').textContent = '#' + String(s.id).padStart(3, '0');
+              document.getElementById('resultSpkId').textContent = s.id;
+              document.getElementById('resultJob').textContent = s.job_da + ' - ' + s.job_en;
+              document.getElementById('resultScript').textContent = s.script;
+              window.scrollTo(0, 0);
+      }
 
-        if (!selectedScript) {
-            errEl.textContent = 'لطفاً اول یک سکریپت انتخاب کنید';
-            errEl.style.display = 'block';
-            return;
-        }
-        if (!name) {
-            errEl.textContent = 'لطفاً نام خود ره بنویسید';
-            errEl.style.display = 'block';
-            return;
-        }
-        errEl.style.display = 'none';
-
-        const s = SCRIPTS.find(x => x.id === selectedScript);
-        
-        document.getElementById('page1').style.display = 'none';
-        document.getElementById('page2').style.display = 'block';
-        document.getElementById('resultNum').textContent = '#' + String(s.id).padStart(3, '0');
-        document.getElementById('resultSpkId').textContent = s.id;
-        document.getElementById('resultJob').textContent = s.job_da + ' — ' + s.job_en;
-        document.getElementById('resultScript').textContent = s.script;
-        
-        window.scrollTo(0, 0);
-    }
-
-    // ── Init ──
-    renderTabs();
-    renderScripts();
-    </script>
-<
-    (function() {
-        const API_URL = "https://script.google.com/macros/s/AKfycbw5XuDMRrTQ8KjLyHYLZbtLgGYNW44T8nYb6l9ZRBGoE8VizpvI6uee6Iuc4PPP31owvw/exec";
-        const overlay = document.getElementById('scriptOverlay');
-        if (overlay) overlay.classList.remove('show');
-
-        const oldSubmit = window.submitClaim;
-        window.submitClaim = async function() {
-            const name = document.getElementById('nameInput').value.trim();
-            if (!window.selectedScript || !name) {
-                if (oldSubmit) oldSubmit();
-                return;
-            }
-            const btn = document.querySelector('.btn');
-            const s = SCRIPTS.find(x => x.id === selectedScript);
-            btn.textContent = '
-            btn.textContent = 'Submitting...';
-            btn.disabled = true;
-            try {
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: s.id, name: name })
-                });
-            } catch (e) { console.error(e); }
-            if (oldSubmit) oldSubmit();
-        };
-        fetch(API_URL).then(r => r.json()).then(data => {
-            window.claimedIds = new Set(data.claimed.map(c => c.id));
-            if (window.renderScripts) window.renderScripts();
+      renderTabs();
+        renderScripts();
+        const INIT_API = "https://script.google.com/macros/s/AKfycbw5XuDMRrTQ8KjLyHYLZbtLgGYNW44T8nYb6l9ZRBGoE8VizpvI6uee6Iuc4PPP31owvw/exec";
+        fetch(INIT_API).then(r => r.json()).then(data => {
+                claimedIds = new Set(data.claimed.map(c => c.id));
+                renderScripts();
         }).catch(console.error);
-    })();
-</script>
-</body>
-</html>
-    
+        document.getElementById('scriptOverlay').classList.remove('show');
+        </script>
+    </div
+        </body>body>
+</html>html>
