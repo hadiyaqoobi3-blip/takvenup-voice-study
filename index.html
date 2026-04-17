@@ -510,7 +510,7 @@
                 <div class="script-card " id="sc-29" onclick="openScript(29)">
                     <div class="script-num">سکریپت 29 — SPK029</div>
                     <div class="script-meta">
-                        <span class="job-badge">کارگر ساختمانی</span>
+                        <span class="job-badge">کارگر ساختمانی</span> // Fix by Jetski
                         <span>زن · 35 ساله</span>
                         <span>Mazari</span>
                     </div>
@@ -2658,4 +2658,40 @@
     renderTabs();
     renderScripts();
     </script>
-</body></html>
+<
+    (function() {
+        const API_URL = "https://script.google.com/macros/s/AKfycbw5XuDMRrTQ8KjLyHYLZbtLgGYNW44T8nYb6l9ZRBGoE8VizpvI6uee6Iuc4PPP31owvw/exec";
+        const overlay = document.getElementById('scriptOverlay');
+        if (overlay) overlay.classList.remove('show');
+
+        const oldSubmit = window.submitClaim;
+        window.submitClaim = async function() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!window.selectedScript || !name) {
+                if (oldSubmit) oldSubmit();
+                return;
+            }
+            const btn = document.querySelector('.btn');
+            const s = SCRIPTS.find(x => x.id === selectedScript);
+            btn.textContent = '
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: s.id, name: name })
+                });
+            } catch (e) { console.error(e); }
+            if (oldSubmit) oldSubmit();
+        };
+        fetch(API_URL).then(r => r.json()).then(data => {
+            window.claimedIds = new Set(data.claimed.map(c => c.id));
+            if (window.renderScripts) window.renderScripts();
+        }).catch(console.error);
+    })();
+</script>
+</body>
+</html>
+    
